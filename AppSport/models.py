@@ -1,23 +1,23 @@
 from django.db import models
 
 # Create your models here.
-class deporte(models.Model):
+class Deporte(models.Model):
     nombre = models.CharField(max_length=20)
     horario = models.CharField(max_length=50)
     edad = models.IntegerField()
 
-class alumno(models.Model):
+class Alumno(models.Model):
     nombre = models.CharField(max_length=20)
     apellido = models.CharField(max_length=20)
     categoria = models.IntegerField()
 
-class profesor(models.Model):
+class Profesor(models.Model):
     nombre = models.CharField(max_length=20)
     apellido = models.CharField(max_length=20)
     deporte = models.CharField(max_length=100)
 
-class partido(models.Model):
+class Partido(models.Model):
     fecha = models.DateField()
     equipoRival = models.CharField(max_length=20)
-    resultadoFinal = models.IntegerField()
+    resultadoFinal = models.CharField(max_length=20)
     ganado = models.BooleanField()
