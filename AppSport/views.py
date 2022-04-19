@@ -82,50 +82,19 @@ def partido(self):
 
 
 def inicio(request):
-    return render(request, 'AppSport/inicio.html')
+    return render(request, 'inicio.html')
 
 def deportes(request):
-    return render(request, 'AppSport/deportes.html')
+    return render(request, 'deportes.html')
 
 def alumnos(request):
-    return render(request, 'AppSport/alumnos.html')
+    return render(request, 'alumnos.html')
 
 def profesores(request):
-    return render(request, 'AppSport/profesores.html')
+    return render(request, 'profesores.html')
 
 def partidos(request):
-    return render(request, 'AppSport/partidos.html')
+    return render(request, 'partidos.html')
 
 def formularioInscripcion(request):
-
-    if request.method == 'post':
-        miFormulario = formularioInscripcion(request.post)
-        print(miFormulario)
-
-        if miFormulario.is_valid:
-            informacion = miFormulario.cleaned_data
-
-        deporte = deporte (request.post ['deporte'], request.post ['categoria'])
-        deporte.save()
-        return render(request, 'AppSport/inicio.html')
-
-    else:
-        miFormulario = formularioInscripcion()
-        return render(request, 'AppSport/formularioInscripcion.html')
-
-
-def busquedaDeporte(request):
-    return render(request, 'AppSport/busquedaDeporte.html')
-
-def buscar(request):
-
-    if request.get ['deporte']:
-        deporte = request.get ['deporte']
-        deporte = deporte.objects.filter(deporte_icontains = deporte)
-
-        return render(request, 'AppSport/resultadoBusqueda.html', {deporte : deporte})
-    
-    else: 
-        respuesta = "No has enviado datos"
-    
-    return HttpResponse(repuesta)
+    return render(request, 'formularioInscripcion.html')

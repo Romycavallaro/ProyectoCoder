@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import * #importamos el archivo models# 
+from .models import * 
 
 admin.site.register(Deporte)
 admin.site.register(Alumno)
