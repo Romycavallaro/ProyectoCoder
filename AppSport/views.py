@@ -3,20 +3,7 @@ from django.http import HttpResponse
 from django.template import Template
 from django.template import loader
 from AppSport.models import Deporte, Alumno, Profesor, Partido
-
-
-def titulo(request):
-    return HttpResponse("App Sport")
-
-def Template(self):
-
-    titulo = "App Sport"
-    descripcion = "Una App creada por el club para que encuentres tu pasión por el deporte"
-
-    diccionario = {"titulo": titulo, "descripcion": descripcion}
-    plantilla = loader.get_template('inicio.html')
-    documento = plantilla.render(diccionario)
-    return HttpResponse(documento)
+from AppSport.forms import formularioInscripcion
 
 
 def deporte(self):
@@ -97,4 +84,18 @@ def partidos(request):
     return render(request, 'partidos.html')
 
 def formularioInscripcion(request):
-    return render(request, 'formularioInscripcion.html')
+    if request.method == "POST":
+        
+        miFormulario = formularioInscripcion(request.POST) 
+        print(miFormulario)
+        
+        if miFormulario.is_valid:
+            informacion = miFormulario.cleaned_data
+            deporte = Deporte(nombre=informacion["deporte"], categoria=informacion["categoria"])
+            deporte.save()
+            return render(request, 'inicio.html')
+
+        else: 
+            miFormulario = formularioInscripcion()
+        
+    return render(request, 'formularioInscripcion.html', {"miFormulario" : miFormulario})
