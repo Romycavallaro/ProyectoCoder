@@ -84,7 +84,7 @@ def profesores(request):
 def partidos(request):
     return render(request, 'partidos.html')
 
-def formularioInscripcion(request):
+def formularioDeInscripcion(request):
     if request.method == "POST":
         
         miFormulario = formularioInscripcion(request.POST) 
@@ -92,11 +92,12 @@ def formularioInscripcion(request):
         
         if miFormulario.is_valid:
             informacion = miFormulario.cleaned_data
-            deporte = Deporte(nombre=informacion["deporte"], categoria=informacion["categoria"])
-            deporte.save()
+            infoDeporte = Deporte(
+                nombre=informacion["deporte"], categoria=informacion["categoria"])
+            infoDeporte.save()
             return render(request, 'inicio.html')
 
-        else: 
+    else: 
             miFormulario = formularioInscripcion()
         
     return render(request, 'formularioInscripcion.html', {"miFormulario" : miFormulario})
