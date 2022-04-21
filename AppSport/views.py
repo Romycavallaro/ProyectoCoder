@@ -6,6 +6,7 @@ from AppSport.models import Deporte, Alumno, Profesor, Partido
 from AppSport.forms import formularioInscripcion
 
 
+
 def deporte(self):
     deporte1 = Deporte(nombre = "Futbol", horario = "martes y sabado de 13 a 14 Hs", edad=5)
     deporte1.save()
@@ -99,3 +100,12 @@ def formularioInscripcion(request):
             miFormulario = formularioInscripcion()
         
     return render(request, 'formularioInscripcion.html', {"miFormulario" : miFormulario})
+
+
+def busquedaDeporte(request):
+    return render(request, 'busquedaDeporte.html')
+
+def buscar(request):
+    respuesta = f"Estoy buscando el Deporte: {request.GET['deporte']}"
+    return HttpResponse(respuesta)
+     
