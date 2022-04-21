@@ -113,20 +113,20 @@ def buscar(request):
 def partidos(request):
     if request.method == 'POST':
 
-        miFormulario = partidosFormulario(request.POST)
-        print(miFormulario)
+        miFormulario2 = partidosFormulario(request.POST)
+        print(miFormulario2)
         
-        if miFormulario.is_valid: 
-            informacion = miFormulario.cleaned_data
+        if miFormulario2.is_valid: 
+            informacion = miFormulario2.cleaned_data
             infoPartido = Partido(
-                fecha=informacion['fecha'], equipoRival=informacion['EquipoRIval'],resultadoFinal=informacion['resultadoFinal'], ganado=informacion['Ganado'])
-            profesor.save()
+                fecha=informacion['fecha'], equipoRival=informacion['EquipoRIval'],resultadoFinal=informacion['resultadoFinal'])
+            infoPartido.save()
             return render(request, 'inicio.html') 
 
     else:
-        miFormulario= partidosFormulario() 
+        miFormulario2= partidosFormulario() 
     
-    return render(request, 'partidos.html', {"miFormulario":miFormulario})
+    return render(request, 'partidos.html', {"miFormulario2":miFormulario2})
 
 def leerLosResultados(request):
     resultado = Partido.objects.all() 
