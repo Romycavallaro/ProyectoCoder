@@ -8,19 +8,19 @@ from AppSport.forms import formularioInscripcion, leerResultados
 
 
 def deporte(self):
-    deporte1 = Deporte(nombre = "Futbol", horario = "martes y sabado de 13 a 14 Hs", edad=5)
+    deporte1 = Deporte(nombreDelDeporte= "Futbol", horario = "martes y sabado de 13 a 14 Hs", categoria=2017)
     deporte1.save()
 
-    deporte2 = Deporte(nombre = "Basquet", horario = "martes y viernes de 10 a 11 Hs", edad=6)
+    deporte2 = Deporte(nombreDelDeporte = "Basquet", horario = "martes y viernes de 10 a 11 Hs", categoria=2005)
     deporte2.save()
 
-    deporte3 = Deporte(nombre = "Hockey", horario = "miércoles y viernes de 17 a 18 Hs", edad=7)
+    deporte3 = Deporte(nombreDelDeporte = "Hockey", horario = "miércoles y viernes de 17 a 18 Hs", categoria=2003)
     deporte3.save()
 
-    deporte4 = Deporte(nombre = "Voley", horario = "lunes y jueves de 18 a 19 Hs", edad=10)
+    deporte4 = Deporte(nombreDelDeporte = "Voley", horario = "lunes y jueves de 18 a 19 Hs", categoria=2010)
     deporte4.save()
 
-    documentoDeTexto = f"--->Deporte:{deporte1.nombre}, Horario:{deporte1.horario}, Edad:{deporte1.edad}" + f"--->Deporte:{deporte2.nombre}, Horario:{deporte2.horario}, Edad:{deporte2.edad}" + f"--->Deporte:{deporte3.nombre}, Horario:{deporte3.horario}, Edad:{deporte3.edad}" + f"--->Deporte:{deporte4.nombre}, Horario:{deporte4.horario}, Edad:{deporte4.edad}"
+    documentoDeTexto = f"--->Deporte:{deporte1.nombreDelDeporte}, Horario:{deporte1.horario}, Edad:{deporte1.categoria}" + f"--->Deporte:{deporte2.nombreDelDeporte}, Horario:{deporte2.horario}, Edad:{deporte2.categoria}" + f"--->Deporte:{deporte3.nombreDelDeporte}, Horario:{deporte3.horario}, Edad:{deporte3.categoria}" + f"--->Deporte:{deporte4.nombreDelDeporte}, Horario:{deporte4.horario}, Edad:{deporte4.categoria}"
     return HttpResponse(documentoDeTexto)
 
 
@@ -93,7 +93,7 @@ def formularioDeInscripcion(request):
         if miFormulario.is_valid:
             informacion = miFormulario.cleaned_data
             infoDeporte = Deporte(
-                nombre=informacion["deporte"], categoria=informacion["categoria"])
+                nombreDelDeporte=informacion["nombreDelDeporte"], horario=informacion["horario"], categoria=informacion["categoria"])
             infoDeporte.save()
             return render(request, 'inicio.html')
 
