@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import Template
 from django.template import loader
 from AppSport.models import Deporte, Alumno, Profesor, Partido
-from AppSport.forms import formularioInscripcion
+from AppSport.forms import formularioInscripcion, leerResultados
 
 
 
@@ -17,7 +17,7 @@ def deporte(self):
     deporte3 = Deporte(nombre = "Hockey", horario = "miércoles y viernes de 17 a 18 Hs", edad=7)
     deporte3.save()
 
-    deporte4 = Deporte(nombre = "Voley", horario = "lujes y jueves de 18 a 19 Hs", edad=10)
+    deporte4 = Deporte(nombre = "Voley", horario = "lunes y jueves de 18 a 19 Hs", edad=10)
     deporte4.save()
 
     documentoDeTexto = f"--->Deporte:{deporte1.nombre}, Horario:{deporte1.horario}, Edad:{deporte1.edad}" + f"--->Deporte:{deporte2.nombre}, Horario:{deporte2.horario}, Edad:{deporte2.edad}" + f"--->Deporte:{deporte3.nombre}, Horario:{deporte3.horario}, Edad:{deporte3.edad}" + f"--->Deporte:{deporte4.nombre}, Horario:{deporte4.horario}, Edad:{deporte4.edad}"
@@ -109,4 +109,27 @@ def busquedaDeporte(request):
 def buscar(request):
     respuesta = f"Estoy buscando el Deporte: {request.GET['deporte']}"
     return HttpResponse(respuesta)
+
+def partidos(request):
+    if request.method == 'POST':
+
+        miFormulario = partidosFormulario(request.POST)
+        print(miFormulario)
+        
+        if miFormulario.is_valid: 
+            informacion = miFormulario.cleaned_data
+            infoPartido = Partido(
+                fecha=informacion['fecha'], equipoRival=informacion['EquipoRIval'],resultadoFinal=informacion['resultadoFinal'], ganado=informacion['Ganado'])
+            profesor.save()
+            return render(request, 'inicio.html') 
+
+    else:
+        miFormulario= partidosFormulario() 
+    
+    return render(request, 'partidos.html', {"miFormulario":miFormulario})
+
+def leerLosResultados(request):
+    resultado = Partido.objects.all() 
+    contexto= {"partidos":partidos}
+    return render(request, 'leerResultados.html', contexto)
      
