@@ -4,8 +4,10 @@ from django.template import Template
 from django.template import loader
 from AppSport.models import Deporte, Alumno, Profesor, Partido
 from AppSport.forms import formularioInscripcion, leerResultados
-
-
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 def deporte(self):
     deporte1 = Deporte(nombreDelDeporte= "Futbol", horario = "martes y sabado de 13 a 14 Hs", categoria=2017)
@@ -133,7 +135,7 @@ def leerLosResultados(request):
     contexto= {"partidos": resultado}
     return render(request, 'leerResultados.html', contexto)
 
-def eliminarResultado(request, partido_fecha):
+def eliminarLosResultados(request, partido_fecha):
     infoPartido = Partido.objects.get(fecha=partido_fecha)
     infoPartido.delete()
     
@@ -162,4 +164,25 @@ def editarResultado(request, partido_fecha):
                                                    'resultadoFianl': partido.resultadoFinal})
     
     return render(request, 'editarResultado.html', {"miFormulario": miFormulario, "partido_fecha": partido_fecha})
-     
+
+class DeporteList(ListView):
+    model = Deporte
+    template_name = 'deportes_list.html'
+
+class DeporteDetalle(ListView): 
+    model = Deporte
+    template_name = 'deporte_detalle.html'    
+
+class DeporteCreacion(CreateView):
+    model = Deporte
+    success_url = 'deporte/list'
+    fields = ['nombre', 'horario', 'categoria']
+
+class DeporteUpdate(UpdateView):
+    model = Deporte
+    success_url = 'deporte/list'
+    fields = ['nombre', 'horario', 'categoria']
+
+class DeporteDelete(DeleteView):
+    model = Deporte
+    success_url = 'deporte/list'
