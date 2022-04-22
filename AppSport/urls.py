@@ -11,5 +11,7 @@ urlpatterns = [
     path('formularioInscripcion', views.formularioDeInscripcion, name = "FormularioDeInscripcion"),
     path('busquedaDeporte', views.busquedaDeporte, name="BusquedaDeporte"),
     path('buscar/', views.buscar),
-    path('leerResultados', views.leerLosResultados, name = "LeerLosResultados")
+    path('leerResultados', views.leerLosResultados, name = "LeerLosResultados"),
+    path('eliminarResultado/<partido_fecha>/', views.eliminarResultado, name="EliminarResultado"),
+    path('editarResultado/<partido_fecha>/', views.editarResultado, name="EditarResultado")
     ]

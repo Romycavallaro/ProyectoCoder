@@ -81,7 +81,7 @@ def alumnos(request):
 def profesores(request):
     return render(request, 'profesores.html')
 
-def partidos(request):
+def partido(request):
     return render(request, 'partidos.html')
 
 def formularioDeInscripcion(request):
@@ -126,10 +126,40 @@ def partidos(request):
     else:
         miFormulario2= partidosFormulario() 
     
-    return render(request, 'partidos.html', {"miFormulario2":miFormulario2})
+    return render(request, 'leerResultados.html', {"miFormulario2":miFormulario2})
 
 def leerLosResultados(request):
     resultado = Partido.objects.all() 
-    contexto= {"partidos":partidos}
+    contexto= {"partidos": resultado}
     return render(request, 'leerResultados.html', contexto)
+
+def eliminarResultado(request, partido_fecha):
+    infoPartido = Partido.objects.get(fecha=partido_fecha)
+    infoPartido.delete()
+    
+    resultado = Partido().objects.all() 
+    contexto = {"partidos": resultado}
+    return render(request, 'leerResultados.html', contexto)
+
+def editarResultado(request, partido_fecha):
+    infoPartido = Partido.objects.get(fecha=partido_fecha)
+    if request.method == 'POST':
+        
+        miFormulario2 = partidosFormulario(request.POST)
+        print(miFormulario2)
+        if miFormulario2.is_valid:  
+            informacion = miFormulario2.cleaned_data
+            partido.fecha = informacion['fecha']
+            partido.equipoRival = informacion['equipoRival']
+            partido.resultadoFinal = informacion['resultadoFinal']
+            partido.save()
+            
+            return render(request, 'inicio.html')
+
+    else:
+    
+        miFormulario = resultadoFormulario(initial={'fecha': partido.fecha, 'equipoRival': partido.equipoRival,
+                                                   'resultadoFianl': partido.resultadoFinal})
+    
+    return render(request, 'editarResultado.html', {"miFormulario": miFormulario, "partido_fecha": partido_fecha})
      
