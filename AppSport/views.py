@@ -3,13 +3,14 @@ from django.http import HttpResponse
 from django.template import Template
 from django.template import loader
 from AppSport.models import Deporte, Alumno, Profesor, Partido
-from AppSport.forms import formularioInscripcion, leerResultados
+from AppSport.forms import formularioInscripcion, leerResultados, UserRegisterForm
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 def deporte(self):
     deporte1 = Deporte(nombreDelDeporte= "Futbol", horario = "martes y sabado de 13 a 14 Hs", categoria=2017)
@@ -215,7 +216,7 @@ def register(request):
     if request.method == 'POST':
         
         form = UserCreationForm(request.POST)
-        #form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             form.save()
@@ -223,6 +224,10 @@ def register(request):
         
         else:
             form = UserCreationForm()
-            #form = UserRegisterForm()
+            form = UserRegisterForm()
         
         return render(request,'registro.html' , {"form":form})
+
+@login_required
+def inicio(request):
+    return render(request,'inicio.html')
