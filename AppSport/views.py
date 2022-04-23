@@ -8,6 +8,8 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, logout, authenticate
 
 def deporte(self):
     deporte1 = Deporte(nombreDelDeporte= "Futbol", horario = "martes y sabado de 13 a 14 Hs", categoria=2017)
@@ -139,7 +141,7 @@ def eliminarLosResultados(request, partido_fecha):
     infoPartido = Partido.objects.get(fecha=partido_fecha)
     infoPartido.delete()
     
-    resultado = Partido().objects.all() 
+    resultado = Partido.objects.all() 
     contexto = {"partidos": resultado}
     return render(request, 'leerResultados.html', contexto)
 
@@ -147,10 +149,10 @@ def editarResultado(request, partido_fecha):
     infoPartido = Partido.objects.get(fecha=partido_fecha)
     if request.method == 'POST':
         
-        miFormulario2 = partidosFormulario(request.POST)
-        print(miFormulario2)
-        if miFormulario2.is_valid:  
-            informacion = miFormulario2.cleaned_data
+        miFormulario3 = partidosFormulario(request.POST)
+        print(miFormulario3)
+        if miFormulario3.is_valid:  
+            informacion = miFormulario3.cleaned_data
             partido.fecha = informacion['fecha']
             partido.equipoRival = informacion['equipoRival']
             partido.resultadoFinal = informacion['resultadoFinal']
@@ -160,10 +162,10 @@ def editarResultado(request, partido_fecha):
 
     else:
     
-        miFormulario = resultadoFormulario(initial={'fecha': partido.fecha, 'equipoRival': partido.equipoRival,
-                                                   'resultadoFianl': partido.resultadoFinal})
+        miFormulario3 = partidosFormulario(initial={'fecha': partido.fecha, 'equipoRival': partido.equipoRival,
+                                                   'resultadoFinal': partido.resultadoFinal})
     
-    return render(request, 'editarResultado.html', {"miFormulario": miFormulario, "partido_fecha": partido_fecha})
+    return render(request, 'editarResultado.html', {"miFormulario3": miFormulario3, "partido_fecha": partido_fecha})
 
 class DeporteList(ListView):
     model = Deporte
@@ -186,3 +188,41 @@ class DeporteUpdate(UpdateView):
 class DeporteDelete(DeleteView):
     model = Deporte
     success_url = 'deporte/list'
+
+def login_request(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data = request.POST)
+        
+        if form.is_valid(): 
+            usuario = form.cleaned_data.get('username')
+            contrasenia = form.cleaned_data.get('password')
+            user = authenticate(username= usuario, password=contrasenia)
+            
+            if user is not None:
+                login(request, user)
+                return render(request, 'inicio.html', {"mensaje":f"Bienvenido {usuario}"})
+            
+            else:
+                return render(request, 'inicio.html', {"mensaje":"Datos incorrectos"})
+        
+        else:
+            return render(request, 'inicio.html', {"mensaje":"Formulario erroneo"})
+    
+    form = AuthenticationForm()
+    return render(request, 'login.html', {"form": form})
+
+def register(request):
+    if request.method == 'POST':
+        
+        form = UserCreationForm(request.POST)
+        #form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            form.save()
+            return render(request,'inicio.html' , {"mensaje":"Usuario Creado :)"})
+        
+        else:
+            form = UserCreationForm()
+            #form = UserRegisterForm()
+        
+        return render(request,'registro.html' , {"form":form})

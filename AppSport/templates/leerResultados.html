@@ -9,6 +9,11 @@
 <body>
     {% for p in partidos %}
         <li>{{p}}</li>
+        <button>
+            <a href="{% url 'EliminarResultado' p.fecha %}"> Eliminar</a>
+            <a href="{% url 'EditarResultado' p.fecha %}"> Editar</a>
+        </button>
+
     {% endfor %}
 </body>
 </html>
