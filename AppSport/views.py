@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import Template
 from django.template import loader
 from AppSport.models import Deporte, Alumno, Profesor, Partido
-from AppSport.forms import formularioInscripcion, leerResultados, UserRegisterForm
+from AppSport.forms import formularioInscripcion, leerResultados, UserRegisterForm, UserEditForm
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -231,3 +231,46 @@ def register(request):
 @login_required
 def inicio(request):
     return render(request,'inicio.html')
+
+@login_required
+def editarPerfil(request):
+    usuario = request.user
+    
+    if request.method == 'POST':
+        miFormulario = UserEditForm(request.POST)
+        
+        if miFormulario.is_valid():
+            informacion = miFormulario.cleaned_data
+            usuario.email = informacion['email']
+            usuario.password1 = informacion['password1']
+            usuario.password2 = informacion['password2']
+            usuario.last_name = informacion['last_name']
+            usuario.first_name = informacion['first_name']
+            usuario.save()
+            
+            return render(request, 'inicio.html')
+        
+        else:
+            miFormulario = UserEditForm(initial={'email': usuario.email})
+        
+        return render(request, 'editarPerfil.html', {"miFormulario": miFormulario, "usuario": usuario})
+
+@login_required
+def inicio(request):
+    avatares = Avatar.objects.filter(user=request.user.id)
+    return render(request, 'inicio.html', {"url": avatares[0].imagen.url})
+
+@login_required
+def agregarAvatar(request):
+    if request.method == 'POST':
+        miFormulario = AvatarFormulario(request.POST, request.FILES)
+        if miFormulario.is_valid:
+            u = user.objects.get(username = request.user)
+            avatar = Avatar (user=u, imagen=miFormulario.cleaned_data['imagen'])
+            avatar.save()
+            return render(request, 'inicio.html')
+    
+    else:
+        miFormulario = AvatarFormulario()
+    
+    return render(request, 'agregarAvatar.html', {"miFormulario": miFormulario}) 
