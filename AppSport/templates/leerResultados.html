@@ -11,9 +11,12 @@
         <li>{{p}}</li>
         <button>
             <a href="{% url 'EliminarResultado' p.fecha %}"> Eliminar</a>
-            <a href="{% url 'EditarResultado' p.fecha %}"> Editar</a>
+            <a href="{% url 'EditarResultado' p.equipoRival %}"> Editar</a>
         </button>
 
     {% endfor %}
+
+    <br>
+    <a href="{% url 'resultadosPartido' %}">Agregar otro Resultado</a>
 </body>
 </html>

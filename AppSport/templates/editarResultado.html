@@ -9,7 +9,8 @@
 <p style="color: red;"> Están mal los datos, revisar</p>
 {% endif %}
 
-<form action="" method="POST">{% csrf_token %}
+<form action="" method="POST">
+    {% csrf_token %}
     
     <table>
         {{ miFormulario3.as_table }}

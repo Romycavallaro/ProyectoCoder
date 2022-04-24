@@ -11,6 +11,11 @@ class leerResultados(forms.Form):
     equipoRival = forms.CharField(max_length=20)
     resultadoFinal = forms.CharField(max_length=20)
 
+class formularioPartidos(forms.Form):
+    fecha = forms.CharField(max_length=20)
+    equipoRival = forms.CharField(max_length=20)
+    resultadoFinal = forms.CharField(max_length=20)
+    ganado = forms.BooleanField()
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput)

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import Template
 from django.template import loader
 from AppSport.models import Deporte, Alumno, Profesor, Partido
-from AppSport.forms import formularioInscripcion, leerResultados, UserRegisterForm, UserEditForm
+from AppSport.forms import formularioInscripcion, leerResultados, formularioPartidos, UserRegisterForm, UserEditForm
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -115,23 +115,23 @@ def buscar(request):
     respuesta = f"Estoy buscando el Deporte: {request.GET['deporte']}"
     return HttpResponse(respuesta)
 
-def partidos(request):
+def resultadosPartidos(request):
     if request.method == 'POST':
 
-        miFormulario2 = partidosFormulario(request.POST)
+        miFormulario2 = formularioPartidos(request.POST)
         print(miFormulario2)
         
         if miFormulario2.is_valid: 
             informacion = miFormulario2.cleaned_data
             infoPartido = Partido(
-                fecha=informacion['fecha'], equipoRival=informacion['EquipoRIval'],resultadoFinal=informacion['resultadoFinal'])
+                fecha=informacion['fecha'], equipoRival=informacion['EquipoRIval'],resultadoFinal=informacion['resultadoFinal'], ganado=informacion['ganado'])
             infoPartido.save()
             return render(request, 'inicio.html') 
 
     else:
-        miFormulario2= partidosFormulario() 
+        miFormulario2= formularioPartidos()
     
-    return render(request, 'leerResultados.html', {"miFormulario2":miFormulario2})
+    return render(request, 'resultadosPartido.html', {"miFormulario2":miFormulario2})
 
 def leerLosResultados(request):
     resultado = Partido.objects.all() 
@@ -146,27 +146,28 @@ def eliminarLosResultados(request, partido_fecha):
     contexto = {"partidos": resultado}
     return render(request, 'leerResultados.html', contexto)
 
-def editarResultado(request, partido_fecha):
-    infoPartido = Partido.objects.get(fecha=partido_fecha)
+def editarResultado(request, partido_equipoRival):
+    partido = Partido.objects.get(equipoRival=partido_equipoRival)
     if request.method == 'POST':
         
-        miFormulario3 = partidosFormulario(request.POST)
+        miFormulario3 = formularioPartidos(request.POST)
         print(miFormulario3)
         if miFormulario3.is_valid:  
             informacion = miFormulario3.cleaned_data
             partido.fecha = informacion['fecha']
             partido.equipoRival = informacion['equipoRival']
             partido.resultadoFinal = informacion['resultadoFinal']
+            partido.ganado = informacion['ganado']
             partido.save()
             
             return render(request, 'inicio.html')
 
     else:
     
-        miFormulario3 = partidosFormulario(initial={'fecha': partido.fecha, 'equipoRival': partido.equipoRival,
-                                                   'resultadoFinal': partido.resultadoFinal})
+        miFormulario3 = formularioPartidos(initial={'fecha': partido.fecha, 'equipoRival': partido.equipoRival,
+                                                   'resultadoFinal': partido.resultadoFinal, 'ganado' : partido.ganado})
     
-    return render(request, 'editarResultado.html', {"miFormulario3": miFormulario3, "partido_fecha": partido_fecha})
+    return render(request, 'editarResultado.html', {"miFormulario3": miFormulario3, "partido_equipoRival": partido_equipoRival})
 
 class DeporteList(ListView):
     model = Deporte
@@ -179,12 +180,12 @@ class DeporteDetalle(ListView):
 class DeporteCreacion(CreateView):
     model = Deporte
     success_url = 'deporte/list'
-    fields = ['nombre', 'horario', 'categoria']
+    fields = ['nombreDelDeporte', 'horario', 'categoria']
 
 class DeporteUpdate(UpdateView):
     model = Deporte
     success_url = 'deporte/list'
-    fields = ['nombre', 'horario', 'categoria']
+    fields = ['nombreDelDeporte', 'horario', 'categoria']
 
 class DeporteDelete(DeleteView):
     model = Deporte
@@ -254,21 +255,20 @@ def editarPerfil(request):
             miFormulario = UserEditForm(initial={'email': usuario.email})
         
         return render(request, 'editarPerfil.html', {"miFormulario": miFormulario, "usuario": usuario})
+#@login_required
+#def inicio(request):
+#    avatares = Avatar.objects.filter(user=request.user.id)
+#    return render(request, 'inicio.html', {"url": avatares[0].imagen.url})
 
-@login_required
-def inicio(request):
-    avatares = Avatar.objects.filter(user=request.user.id)
-    return render(request, 'inicio.html', {"url": avatares[0].imagen.url})
-
-@login_required
-def agregarAvatar(request):
-    if request.method == 'POST':
-        miFormulario = AvatarFormulario(request.POST, request.FILES)
-        if miFormulario.is_valid:
-            u = user.objects.get(username = request.user)
-            avatar = Avatar (user=u, imagen=miFormulario.cleaned_data['imagen'])
-            avatar.save()
-            return render(request, 'inicio.html')
+#@login_required
+#def agregarAvatar(request):
+#    if request.method == 'POST':
+#        miFormulario = AvatarFormulario(request.POST, request.FILES)
+#        if miFormulario.is_valid:
+#            u = user.objects.get(username = request.user)
+#            avatar = Avatar (user=u, imagen=miFormulario.cleaned_data['imagen'])
+#            avatar.save()
+#            return render(request, 'inicio.html')
     
     else:
         miFormulario = AvatarFormulario()
