@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import Template
 from django.template import loader
-from AppSport.models import Deporte, Alumno, Profesor, Partido
+from AppSport.models import Deporte, Alumno, Profesor, Partido, Avatar
 from AppSport.forms import formularioInscripcion, leerResultados, formularioPartidos, UserRegisterForm, UserEditForm
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -216,7 +216,7 @@ def login_request(request):
 def register(request):
     if request.method == 'POST':
         
-        form = UserCreationForm(request.POST)
+        #form = UserCreationForm(request.POST)
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -224,7 +224,7 @@ def register(request):
             return render(request,'inicio.html' , {"mensaje":"Usuario Creado :)"})
         
         else:
-            form = UserCreationForm()
+           # form = UserCreationForm()
             form = UserRegisterForm()
         
         return render(request,'registro.html' , {"form":form})
@@ -251,24 +251,25 @@ def editarPerfil(request):
             
             return render(request, 'inicio.html')
         
-        else:
+    else:
             miFormulario = UserEditForm(initial={'email': usuario.email})
         
-        return render(request, 'editarPerfil.html', {"miFormulario": miFormulario, "usuario": usuario})
-#@login_required
-#def inicio(request):
-#    avatares = Avatar.objects.filter(user=request.user.id)
-#    return render(request, 'inicio.html', {"url": avatares[0].imagen.url})
+    return render(request, 'editarPerfil.html', {"miFormulario": miFormulario, "usuario": usuario})
 
-#@login_required
-#def agregarAvatar(request):
-#    if request.method == 'POST':
-#        miFormulario = AvatarFormulario(request.POST, request.FILES)
-#        if miFormulario.is_valid:
-#            u = user.objects.get(username = request.user)
-#            avatar = Avatar (user=u, imagen=miFormulario.cleaned_data['imagen'])
-#            avatar.save()
-#            return render(request, 'inicio.html')
+@login_required
+def inicio(request):
+    avatares = Avatar.objects.filter(user=request.user.id)
+    return render(request, 'inicio.html', {"url": avatares[0].imagen.url})
+
+@login_required
+def agregarAvatar(request):
+    if request.method == 'POST':
+        miFormulario = AvatarFormulario(request.POST, request.FILES)
+        if miFormulario.is_valid:
+            u = user.objects.get(username = request.user)
+            avatar = Avatar (user=u, imagen=miFormulario.cleaned_data['imagen'])
+            avatar.save()
+            return render(request, 'inicio.html')
     
     else:
         miFormulario = AvatarFormulario()
