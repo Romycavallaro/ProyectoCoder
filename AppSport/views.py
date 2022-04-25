@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import Template
 from django.template import loader
-from AppSport.models import Deporte, Alumno, Profesor, Partido, Avatar
+from AppSport.models import Deporte, Alumno, Profesor, Partido
 from AppSport.forms import formularioInscripcion, leerResultados, formularioPartidos, UserRegisterForm, UserEditForm
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -28,6 +28,10 @@ def deporte(self):
     documentoDeTexto = f"--->Deporte:{deporte1.nombreDelDeporte}, Horario:{deporte1.horario}, Edad:{deporte1.categoria}" + f"--->Deporte:{deporte2.nombreDelDeporte}, Horario:{deporte2.horario}, Edad:{deporte2.categoria}" + f"--->Deporte:{deporte3.nombreDelDeporte}, Horario:{deporte3.horario}, Edad:{deporte3.categoria}" + f"--->Deporte:{deporte4.nombreDelDeporte}, Horario:{deporte4.horario}, Edad:{deporte4.categoria}"
     return HttpResponse(documentoDeTexto)
 
+def leerDeporte(request):
+    deporteInfo = Deporte.objects.all()
+    contexto = {"deportesInfo" : deporteInfo}
+    return render(request, 'deportes.html', contexto)
 
 def alumno(self):
     alumno1 = Alumno(nombre = "Dante", apellido = "Garegnani", categoria=2017)
@@ -41,6 +45,11 @@ def alumno(self):
 
     documentoDeTexto = f"--->Nombre:{alumno1.nombre}, Apellido:{alumno1.apellido}, Categoria:{alumno1.categoria}" + f"--->Nombre:{alumno2.nombre}, Apellido:{alumno2.apellido}, Categoria:{alumno2.categoria}" + f"--->Nombre:{alumno3.nombre}, Apellido:{alumno3.apellido}, Categoria:{alumno3.categoria}"
     return HttpResponse(documentoDeTexto)
+
+def leerAlumno(request):
+    alumnoInfo = Alumno.objects.all()
+    contexto = {"alumnosInfo" : alumnoInfo}
+    return render(request, 'alumnos.html', contexto)
 
 
 def profesor(self):
@@ -59,6 +68,10 @@ def profesor(self):
     documentoDeTexto = f"--->Nombre:{profesor1.nombre}, Apellido:{profesor1.apellido}, Deporte:{profesor1.deporte}" + f"--->Nombre:{profesor2.nombre}, Apellido:{profesor2.apellido}, Deporte:{profesor2.deporte}" + f"--->Nombre:{profesor3.nombre}, Apellido:{profesor3.apellido}, Deporte:{profesor3.deporte}" + f"--->Nombre:{profesor4.nombre}, Apellido:{profesor4.apellido}, Deporte:{profesor4.deporte}"
     return HttpResponse(documentoDeTexto)
 
+def leerProfesor(request):
+    profesorInfo = Profesor.objects.all()
+    contexto = {"profesoresInfo" : profesorInfo}
+    return render(request, 'profesores.html', contexto)
 
 def partido(self):
     partido1 = Partido(fecha = "2022-04-01", equipoRival = "San Lorenzo", resultadoFinal = "2 a 1", ganado = True)
@@ -136,7 +149,7 @@ def resultadosPartidos(request):
 def leerLosResultados(request):
     resultado = Partido.objects.all() 
     contexto= {"partidos": resultado}
-    return render(request, 'leerResultados.html', contexto)
+    return render(request, 'partidos.html', contexto)
 
 def eliminarLosResultados(request, partido_fecha):
     infoPartido = Partido.objects.get(fecha=partido_fecha)
@@ -256,22 +269,22 @@ def editarPerfil(request):
         
     return render(request, 'editarPerfil.html', {"miFormulario": miFormulario, "usuario": usuario})
 
-@login_required
-def inicio(request):
-    avatares = Avatar.objects.filter(user=request.user.id)
-    return render(request, 'inicio.html', {"url": avatares[0].imagen.url})
+#@login_required
+#def inicio(request):
+#    avatares = Avatar.objects.filter(user=request.user.id)
+#    return render(request, 'inicio.html', {"url": avatares[0].imagen.url})
 
-@login_required
-def agregarAvatar(request):
-    if request.method == 'POST':
-        miFormulario = AvatarFormulario(request.POST, request.FILES)
-        if miFormulario.is_valid:
-            u = user.objects.get(username = request.user)
-            avatar = Avatar (user=u, imagen=miFormulario.cleaned_data['imagen'])
-            avatar.save()
-            return render(request, 'inicio.html')
+#@login_required
+#def agregarAvatar(request):
+#    if request.method == 'POST':
+#        miFormulario = AvatarFormulario(request.POST, request.FILES)
+#        if miFormulario.is_valid:
+#            u = user.objects.get(username = request.user)
+#            avatar = Avatar (user=u, imagen=miFormulario.cleaned_data['imagen'])
+#            avatar.save()
+#            return render(request, 'inicio.html')
     
-    else:
-        miFormulario = AvatarFormulario()
+#    else:
+#        miFormulario = AvatarFormulario()
     
-    return render(request, 'agregarAvatar.html', {"miFormulario": miFormulario}) 
+#    return render(request, 'agregarAvatar.html', {"miFormulario": miFormulario}) 

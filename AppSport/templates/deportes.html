@@ -3,5 +3,13 @@
 {% block contenidoQueCambia %}
 <!--Aquí va lo que cambia, y lo asociado a está vista :) -->
 <h1>Deportes</h1>
-<p>Aquí tenemos el portal de Deportes</p>
+<p>Toda la info sobre los deportes que podes practicar</p>
+
+
+{% for p in deportesInfo %}
+<li>{{p}}</li>
+
+{% endfor %}
+
+
 {% endblock %}

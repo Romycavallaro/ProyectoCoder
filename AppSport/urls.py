@@ -5,10 +5,10 @@ from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('', views.inicio, name="Inicio"), 
-    path('deportes', views.deportes, name="Deportes"),
-    path('profesores', views.profesores, name="Profesores"),
-    path('alumnos', views.alumnos, name="Alumnos"),
-    path('partidos', views.partido, name="Partidos"),
+    path('deportes', views.leerDeporte, name="Deportes"),
+    path('profesores', views.leerProfesor, name="Profesores"),
+    path('alumnos', views.leerAlumno, name="Alumnos"),
+    path('partidos', views.leerLosResultados, name="Partidos"),
     path('formularioInscripcion', views.formularioDeInscripcion, name = "FormularioDeInscripcion"),
     path('busquedaDeporte', views.busquedaDeporte, name="BusquedaDeporte"),
     path('buscar/', views.buscar),
@@ -25,5 +25,5 @@ urlpatterns = [
     path('register', views.register, name='Register'),
     path('logout', LogoutView.as_view(template_name='logout.html'), name='Logout'),
     path('editarPerfil', views.editarPerfil, name="EditarPerfil"),
-    path('agregarAvatar', views.agregarAvatar, name='AgregarAvatar'),
+    #path('agregarAvatar', views.agregarAvatar, name='AgregarAvatar'),
     ]

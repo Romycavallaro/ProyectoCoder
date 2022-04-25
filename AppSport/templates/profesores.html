@@ -3,5 +3,13 @@
 {% block contenidoQueCambia %}
 <!--Aquí va lo que cambia, y lo asociado a está vista :) -->
 <h1>Profesores</h1>
-<p>Aquí tenemos el portal de Profesores</p>
+<p>Nuestros Profes</p>
+
+
+{% for p in profesoresInfo %}
+<li>{{p}}</li>
+
+{% endfor %}
+
+
 {% endblock %}
