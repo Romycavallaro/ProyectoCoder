@@ -10,6 +10,12 @@
 <li>{{p}}</li>
 
 {% endfor %}
-
+<br>
+<br>
+<h4>Buscá la info del deporte en nuestro buscador</h4>
+<form action="/buscar/" method="GET">
+    <input type="text" name="deporte" id="deporte">
+    <input type="submit" value="Buscar" />
+</form>
 
 {% endblock %}
