@@ -1,4 +1,4 @@
-# ProyectoCoder
+# ProyectoCoder // Autora: Cavallaro Romina
 # El proyecto está destinado a realizar una App que nuclee todos los contenidos aprendidos en el Curso de Python
 # Se desarrollo en el entorno de VSCode con una base de Python y Django.
 # Como complemento se utilizó Html, Css, Js y Bootstrap
