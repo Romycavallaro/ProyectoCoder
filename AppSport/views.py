@@ -86,6 +86,10 @@ def partido(self):
     documentoDeTexto = f"--->Fecha:{partido1.fecha}, El Equipo Rival fue:{partido1.equipoRival}, El resultado fue:{partido1.resultadoFinal}, EL partido fue ganado:{partido1.ganado}" + f"--->Fecha:{partido2.fecha}, El Equipo Rival fue:{partido2.equipoRival}, El resultado fue:{partido2.resultadoFinal}, EL partido fue ganado:{partido2.ganado}" + f"--->Fecha:{partido3.fecha}, El Equipo Rival fue:{partido3.equipoRival}, El resultado fue:{partido3.resultadoFinal}, EL partido fue ganado:{partido3.ganado}"
     return HttpResponse(documentoDeTexto)
 
+def leerResultados(request):
+    resultado = Partido.objects.all() 
+    contexto= {"partidos": resultado}
+    return render(request, 'partidos.html', contexto)
 
 def inicio(request):
     return render(request, 'inicio.html')
@@ -149,7 +153,7 @@ def resultadosPartidos(request):
 def leerLosResultados(request):
     resultado = Partido.objects.all() 
     contexto= {"partidos": resultado}
-    return render(request, 'partidos.html', contexto)
+    return render(request, 'leerResultados.html', contexto)
 
 def eliminarLosResultados(request, partido_fecha):
     infoPartido = Partido.objects.get(fecha=partido_fecha)
