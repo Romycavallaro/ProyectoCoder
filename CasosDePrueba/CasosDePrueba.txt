@@ -1,0 +1,45 @@
+Nombre del Proyecto: App Sport
+No Caso de prueba 1
+Escrito por Romina
+Probado por Romina
+Navegador: Google Chrome
+Descripción: Ingresar al Login con mail incorrecto o no existente
+
+Prueba #
+1
+Fecha 15/04
+Accion: Registrarse
+Resultado esperado: Que no pueda realizar un registro con un mail que no existe o incorrecto
+Resultado actual: No se puede registrarse con un mail que no existe. Por ejemplo mail@mail
+Arpobado SI 
+
+Nombre del Proyecto: App Sport
+No Caso de prueba 2
+Escrito por Romina
+Probado por Romina
+Navegador: Google Chrome
+Descripción: En la página de Inicio, poder ingresar al formulario de inscripción para poder anotarse en un deporte
+
+Prueba #
+2
+Fecha 17/04
+Accion: Anotarse en un deporte a través del Formulario
+Resultado esperado: Ingresar logueado a Inicio y poder clickear en Formulario de Inscripción, poder llenar el formulario con datos correctos y 
+tenes Ok inscripto
+Resultado actual: No hay una forma de reconfirmar la inscripción automática
+Arpobado NO 
+
+Nombre del Proyecto: App Sport
+No Caso de prueba 3
+Escrito por Romina
+Probado por Romina
+Navegador: Google Chrome
+Descripción: Eliminar o editar un formulario teniendo solo permiso de usuario y no de administrador
+
+Prueba #
+1
+Fecha 20/04
+Accion Eliminar un resultado
+Resultado esperado: Que no pueda realizar la eliminación de un partido siendo un usuario con permisos limitados
+Resultado actual: Actualmente se puede eliminar o editar siendo usuario regular
+Arpobado NO
